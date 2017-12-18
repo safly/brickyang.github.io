@@ -346,9 +346,9 @@
         
         <tags>
             
-            <tag> Docker </tag>
-            
             <tag> MongoDB </tag>
+            
+            <tag> Docker </tag>
             
         </tags>
         
@@ -371,7 +371,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">DUMP=mongodump</span><br><span class="line">OUT_DIR=/data/backup/mongod/tmp   // 备份文件临时目录</span><br><span class="line">TAR_DIR=/data/backup/mongod       // 备份文件正式目录</span><br><span class="line">DATE=`date +%Y_%m_%d_%H_%M_%S`    // 备份文件将以备份时间保存</span><br><span class="line">DB_USER=&lt;USER&gt;                    // 数据库操作员</span><br><span class="line">DB_PASS=&lt;PASSWORD&gt;                // 数据库操作员密码</span><br><span class="line">DAYS=14                           // 保留最新14天的备份</span><br><span class="line">TAR_BAK=<span class="string">"mongod_bak_<span class="variable">$DATE</span>.tar.gz"</span> // 备份文件命名格式</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$OUT_DIR</span>                       // 创建文件夹</span><br><span class="line">rm -rf <span class="variable">$OUT_DIR</span>/*                 // 清空临时目录</span><br><span class="line">mkdir -p <span class="variable">$OUT_DIR</span>/<span class="variable">$DATE</span>           // 创建本次备份文件夹</span><br><span class="line"><span class="variable">$DUMP</span> -u <span class="variable">$DB_USER</span> -p <span class="variable">$DB_PASS</span> -o <span class="variable">$OUT_DIR</span>/<span class="variable">$DATE</span>  // 执行备份命令</span><br><span class="line">tar -zcvf <span class="variable">$TAR_DIR</span>/<span class="variable">$TAR_BAK</span> <span class="variable">$OUT_DIR</span>/<span class="variable">$DATE</span>       // 将备份文件打包放入正式目录</span><br><span class="line">find <span class="variable">$TAR_DIR</span>/ -mtime +<span class="variable">$DAYS</span> -delete             // 删除14天前的旧备份</span><br></pre></td></tr></table></figure>
 <p>这个脚本完成了备份、打包、删除一定时间之前旧备份的工作。注意其中的 <code>user</code> 需要具有对希望备份的数据库具有 <code>find</code> 操作权限。</p>
 <p>保存好脚本后别忘了将它设为可执行：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x ~<span class="regexp">/crontab/m</span>ongod_bak.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x ~<span class="regexp">/crontab/m</span>ongod_bak.sh</span><br></pre></td></tr></table></figure>
 <p>现在你可以试着执行一下 <code>./mongod_bak.sh</code>，就会在备份文件夹中看到打包好的备份数据了。</p>
 <h2 id="自动运行"><a href="#自动运行" class="headerlink" title="自动运行"></a>自动运行</h2><p>备份脚本写好之后，就需要让它自动运行。直接使用 Linux 的 <code>crontab</code> 命令即可：</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi <span class="regexp">/etc/</span>crontab</span><br></pre></td></tr></table></figure>
