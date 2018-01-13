@@ -34,7 +34,7 @@
 <ol>
 <li>在 <code>build</code> 中产生的文件（安装的依赖和编译文件），需要通过 <code>artifacts</code> 传递给后续的 <code>jobs</code>，否则后续 <code>jobs</code> 的环境中是没有这些文件的。</li>
 <li>所有环境和数据库都在不同的 Docker <code>container</code> 中，所以连接数据库不能用 <code>Host: localhost</code>，而要用 <code>Host: redis</code>、<code>Host: mysql</code> 这种。</li>
-<li><code>$CI_REGISTRY</code> 这种是 GitLab 的<a href="https://docs.gitlab.com/ce/ci/variables/README.html" title="GitLab CI/CD Variables" target="_blank" rel="noopener">内置变量</a>，可以直接使用。<code>$CI_JOB_TOKEN</code> 需要在设置页面先新建一个 Access Token。</li>
+<li><code>$CI_REGISTRY</code> 这种是 GitLab 的<a href="https://docs.gitlab.com/ce/ci/variables/README.html" title="GitLab CI/CD Variables" target="_blank" rel="noopener">预设变量</a>，可以直接使用。<code>$CI_JOB_TOKEN</code> 需要在设置页面先新建一个 Access Token。</li>
 </ol>
 <p>GitLab 提供了 <a href="https://gitlab.com/ci/lint" target="_blank" rel="noopener">CI Lint</a> 工具检查 <code>.gitlab-ci.yml</code> 文件的语法正确性。</p>
 <h3 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a><a href="https://docs.docker.com/engine/reference/builder/" title="Dockerfile reference" target="_blank" rel="noopener">Dockerfile</a></h3><p>CI 的最后一步是 <code>build</code> Docker Image，所以要提供 Dockerfile 文件。</p>
