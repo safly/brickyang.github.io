@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://brickyang.github.io/"/>
-  <updated>2018-03-10T16:29:46.313Z</updated>
+  <updated>2018-03-10T16:32:11.893Z</updated>
   <id>http://brickyang.github.io/</id>
   
   <author>
@@ -21,51 +21,18 @@
     <link href="http://brickyang.github.io/2018/03/10/Node-js-%E8%A7%A3%E5%86%B3-csv-%E6%96%87%E4%BB%B6%E4%B9%B1%E7%A0%81%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%8A%9E%E6%B3%95/"/>
     <id>http://brickyang.github.io/2018/03/10/Node-js-解决-csv-文件乱码的两种办法/</id>
     <published>2018-03-10T15:56:57.000Z</published>
-    <updated>2018-03-10T16:29:46.313Z</updated>
+    <updated>2018-03-10T16:32:11.893Z</updated>
     
     <content type="html"><![CDATA[<h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>使用 Excel 打开 csv 文件出现乱码，通常是由于文件编码不匹配导致的。常见的两种编码：</p><ul><li>UTF-8：macOS 和 Node.js 环境的默认编码。macOS 和 Windows 的 Excel 打开是乱码。</li><li>GBK：macOS 和 Windows 的 Excel 打开可以正确显示。在 macOS 的「预览」中显示乱码。</li></ul><p>注意 Excel 在 macOS 和 Windows 的行为是一致的。所以 UTF-8 编码的 csv 文件在两个系统的 Excel 中都是乱码，GBK 在两个系统上都正常显示。</p><h2 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h2><p>由上述结论可知，将 csv 文件保存为 GBK 编码，即可在两个系统的 Excel 中正确显示。Node.js 本身不支持 GBK 编码，可使用 <a href="iconv-lite">iconv-lite</a> 库。</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> fs <span class="keyword">from</span> <span class="string">'fs'</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> iconv <span class="keyword">from</span> <span class="string">'iconv-lite'</span>;</span><br><span class="line"></span><br><span class="line">fs.writeFileSync(filename, iconv.encode(str, <span class="string">'gbk'</span>));</span><br></pre></td></tr></table></figure><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul><li>使用简单</li><li>macOS 和 Windows 的 Excel 都可以正常显示</li><li>Excel 兼容性好</li></ul><h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul><li>不兼容 UTF-8 环境，比如 macOS 的「预览」中会显示乱码</li><li>Node.js 不支持 GBK</li></ul><h2 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h2><p>Excel 并非不认识 UTF-8，而是不认识 UTF-8 without BOM。如果 UTF-8 文件带有 BOM 头，则 Excel 可以正确识别和打开。解法二就是给 csv 文件加上 BOM。</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> fs <span class="keyword">from</span> <span class="string">'fs'</span>;</span><br><span class="line"></span><br><span class="line">fs.writeFileSync(filename, <span class="string">'\ufeff'</span>);</span><br><span class="line">fs.appendFileSync(filename, str);</span><br></pre></td></tr></table></figure><h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><ul><li>优雅的 UTF-8 编码，兼容性广</li><li>Linux/Node.js 和 Excel 都可以正确打开</li></ul><h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><ul><li>低版本的 Excel 不支持</li></ul><h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol><li>如果只考虑 Excel 的兼容性，尤其是重点考虑 Windows 平台，使用解法一；</li><li>如果解法一不能满足需要，且不用考虑低版本 Excel，使用解法二；</li><li>否则考虑使用 xlsx 文件。</li></ol>]]></content>
     
     <summary type="html">
     
-      
-      
-        &lt;h2 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot; title=&quot;问题背景&quot;&gt;&lt;/a&gt;问题背景&lt;/h2&gt;&lt;p&gt;使用 Excel 打开 csv 文件出现乱码，通常是由于文件编码不匹配导致的。常见的两种编码：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;U
-      
+      解决 csv 文件在 macOS 和 Windows 下使用 Excel 打开时中文出现乱码的问题。
     
     </summary>
     
     
       <category term="Node.js" scheme="http://brickyang.github.io/tags/Node-js/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何使用 React、Webpack、MobX、TypeScript 和 Egg.js 技术栈</title>
-    <link href="http://brickyang.github.io/2018/02/23/egg-react-mobx-demo/"/>
-    <id>http://brickyang.github.io/2018/02/23/egg-react-mobx-demo/</id>
-    <published>2018-02-23T11:42:56.000Z</published>
-    <updated>2018-02-25T03:05:29.407Z</updated>
-    
-    <content type="html"><![CDATA[<p>本文通过一个 Todo List 的 DEMO 介绍如何使用 <a href="https://github.com/facebook/react" target="_blank" rel="noopener">React</a>、<a href="https://github.com/webpack/webpack" target="_blank" rel="noopener">Webpack</a>、<a href="https://github.com/mobxjs/mobx" target="_blank" rel="noopener">MobX</a>、<a href="https://github.com/Microsoft/TypeScript" target="_blank" rel="noopener">TypeScript</a> 和 <a href="https://github.com/eggjs/egg" target="_blank" rel="noopener">Egg.js</a> 技术栈进行 SSR（服务端渲染）App 的开发。DEMO 代码位于 <a href="https://github.com/brickyang/egg-react-mobx-demo" target="_blank" rel="noopener">egg-react-mobx-demo</a>，包含了三个逐步「演化」的版本：</p><ul><li><strong>v1：</strong>非 TypeScript，与 Egg.js 非耦合。可以将 Server 换成任何一种框架（Express、Koa 等）。</li><li><strong>v2：</strong>非 TypeScript，与 Egg.js 耦合。</li><li><strong>current：</strong>前后端使用 TypeScript 重写。</li></ul><p>这套技术栈中，React 和 Webpack 是关键。MobX 只是一个状态管理工具，可以替换为 Redux 或者不用。这里加入 MobX 纯粹只是想试试与 Redux 不同的工具。</p><p>Egg.js 也不是严格必须的，可以替换为其他服务端框架，比如 Express 或 Koa。但是从第二阶段开始会把 webpack-dev-server 整合进 Egg.js。</p><h2 id="v1"><a href="#v1" class="headerlink" title="v1"></a>v1</h2><p>v1 版本是最「正统」的架构，在开发环境下使用独立的 webpack-dev-server </p>]]></content>
-    
-    <summary type="html">
-    
-      通过一个 Todo List 的 DEMO 介绍如何使用 React、MobX、Webpack、TypeScript 和 Egg.js 技术栈进行 SSR（服务端渲染）App 的开发。
-    
-    </summary>
-    
-    
-      <category term="React" scheme="http://brickyang.github.io/tags/React/"/>
-    
-      <category term="MobX" scheme="http://brickyang.github.io/tags/MobX/"/>
-    
-      <category term="Webpack" scheme="http://brickyang.github.io/tags/Webpack/"/>
-    
-      <category term="Egg.js" scheme="http://brickyang.github.io/tags/Egg-js/"/>
-    
-      <category term="TypeScript" scheme="http://brickyang.github.io/tags/TypeScript/"/>
     
   </entry>
   
