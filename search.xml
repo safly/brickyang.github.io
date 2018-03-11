@@ -74,12 +74,6 @@
             
             <tag> DeepLearning </tag>
             
-            <tag> Ubuntu </tag>
-            
-            <tag> Python </tag>
-            
-            <tag> AWS </tag>
-            
             <tag> Tensorflow </tag>
             
             <tag> Keras </tag>
@@ -99,8 +93,6 @@
             <tag> MongoDB </tag>
             
             <tag> Egg.js </tag>
-            
-            <tag> Egg Plugin </tag>
             
         </tags>
       
